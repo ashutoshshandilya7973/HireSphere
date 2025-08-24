@@ -6,7 +6,6 @@ import { Building, DollarSign, LocateIcon, MapPin, Watch } from 'lucide-react';
 import { Button } from '../ui/button';
 const FeaturedJob = () => {
     const [cardData, setCardData] = useState(featuredJobs);
-    console.log(cardData)
     return (
         <section className='max-w-7xl m-auto mt-20'>
             <div className=" text-center ">
@@ -15,11 +14,11 @@ const FeaturedJob = () => {
             </div>
             {/* card of featured job */}
 
-            <div className=" flex flex-col md:flex-row justify-between gap-4 mt-20">
+            <div className=" flex flex-col flex-wrap md:flex-row justify-between gap-4 mt-20 items-stretch">
                 {
                     cardData.map((card) => {
                         return (
-                            <Card key={card.id} className="w-[80%] m-auto md:w-1/3 bg-gray-500">
+                            <Card key={card.id} className="w-[80%] flex-1 m-auto md:w-1/3 bg-gray-500 flex flex-col h-full">
                                 <CardHeader>
                                     <div className="flex justify-between items-start">
                                         <div className="">
