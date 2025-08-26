@@ -7,8 +7,23 @@ import BasicsTab from '../../components/Hr/JobCreateForm/Tabs/BasicsTab'
 import DetailsTab from '../../components/Hr/JobCreateForm/Tabs/DetailsTab'
 import RequirementsTab from '../../components/Hr/JobCreateForm/Tabs/RequirementsTab'
 import SettingsTab from '../../components/Hr/JobCreateForm/Tabs/SettingsTab'
+import { set, useForm } from 'react-hook-form'
 
 const CreateJobPost = () => {
+  const { register, handleSubmit, watch, setValue,reset, control, formState: { error } } = useForm({
+    defaultValues: {
+      responsibility: [{ value: "" }],
+      benifit: [{ value: '' }],
+      qualification:[{value:""}],
+      skills:['']
+    },
+
+  })
+
+  function onSubmit(data) {
+    console.log(data)
+    reset()
+  }
   return (
     <section className='w-full min-h-screen bg-linear-to-r from-gray-900 to-black text-white overflow-hidden'>
       <h1 className='max-w-[90%] md:w-5xl m-auto font-roboto text-4xl font-medium mt-5 md:mt-10'>Create Job Post</h1>
@@ -32,18 +47,20 @@ const CreateJobPost = () => {
               <span ><Users /></span>
               Settings</TabsTrigger>
           </TabsList>
-          <TabsContent value="basics" className="">
-            <BasicsTab />
-          </TabsContent>
-          <TabsContent value="details">
-            <DetailsTab />
-          </TabsContent>
-          <TabsContent value="requirements">
-            <RequirementsTab />
-          </TabsContent>
-          <TabsContent value="settings">
-            <SettingsTab />
-          </TabsContent>
+          <form id="myform" onSubmit={handleSubmit(onSubmit)}>
+            <TabsContent value="basics" className="">
+              <BasicsTab register={register} control={control} />
+            </TabsContent>
+            <TabsContent value="details">
+              <DetailsTab register={register} control={control} />
+            </TabsContent>
+            <TabsContent value="requirements">
+              <RequirementsTab register={register} control={control} watch={watch} setValue={setValue}/>
+            </TabsContent>
+            <TabsContent value="settings">
+              <SettingsTab register={register} control={control} setValue={setValue}/>
+            </TabsContent>
+          </form>
         </Tabs>
       </div>
       {/* <div className='h-[1px] w-full bg-white max-w-[90%] md:w-5xl m-auto mt-5 '></div> */}
@@ -60,12 +77,13 @@ const CreateJobPost = () => {
             <span><Save /> </span>
             Save as draft
           </Button>
-          <Button className="bg-gray-700">
+          <Button type="submit" form="myform" className="bg-gray-700">
             <span><Send /></span>
             Publish job
           </Button>
         </div>
       </div>
+
     </section>
   )
 }
