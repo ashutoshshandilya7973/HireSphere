@@ -32,7 +32,7 @@ const SettingsTab = ({ register, control, setValue }) => {
                             <Label htmlFor="deadline">Application Deadline</Label>
                             <div className="mt-5">
                                 <Controller
-                                    name="deadLineDate"
+                                    name="deadlineDate"
                                     control={control}
                                     render={({field}) => (<Popover open={openDeadline} onOpenChange={setOpenDeadline}>
                                         <PopoverTrigger asChild>
@@ -95,13 +95,13 @@ const SettingsTab = ({ register, control, setValue }) => {
 
                     </div>
                     <div className="mt-5 flex items-center gap-2">
-                        <Checkbox id="skill"     {...register("requireSkills")}
+                        <Checkbox id="skill"     {...register("skillAssessment")}
                         />
                         <Label htmlFor="skill">Require skills assessment for applicants</Label>
                     </div>
                     <div className='mt-5 '>
                         <Label className="mb-3" htmlFor="description">Company Description</Label>
-                        <Textarea {...register("description")} rows={8} className="resize-none shadow-lg shadow-gray-300/30" id="description" placeholder="Brief description of your company,culture and value" />
+                        <Textarea {...register("companyDescription")} rows={8} className="resize-none shadow-lg shadow-gray-300/30" id="description" placeholder="Brief description of your company,culture and value" />
                     </div>
                 </CardContent>
             </Card>

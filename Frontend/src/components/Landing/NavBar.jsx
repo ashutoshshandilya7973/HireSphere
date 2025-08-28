@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Menu } from "lucide-react";
 import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton, useUser } from "@clerk/clerk-react";
 import { Link } from "react-router-dom";
-
+import ClerkAuth from "./ClerkAuth";
 const NavBar = () => {
   const [hamburger, setHamburger] = useState(false);
   const toggleHamburger = () => setHamburger((prev) => !prev);
@@ -26,7 +26,7 @@ const NavBar = () => {
       {/* Auth Buttons / User Info */}
       <div className="hidden md:flex gap-2">
         <SignedOut>
-          <div className="bg-green-600 rounded-md p-1 px-2 cursor-pointer"><SignInButton  forceRedirectUrl="/"/>
+          <div className="bg-green-600 rounded-md p-1 px-2 cursor-pointer"><SignInButton />
           </div>
           <div className="bg-green-600 rounded-md p-1 px-2 cursor-pointer"><SignUpButton  forceRedirectUrl="/choose-role"/>
           </div>
@@ -34,6 +34,7 @@ const NavBar = () => {
         
         <SignedIn>
           <UserButton />
+          <ClerkAuth/>
         </SignedIn>
       </div>
 

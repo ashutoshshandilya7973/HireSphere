@@ -7,19 +7,23 @@ import BasicsTab from '../../components/Hr/JobCreateForm/Tabs/BasicsTab'
 import DetailsTab from '../../components/Hr/JobCreateForm/Tabs/DetailsTab'
 import RequirementsTab from '../../components/Hr/JobCreateForm/Tabs/RequirementsTab'
 import SettingsTab from '../../components/Hr/JobCreateForm/Tabs/SettingsTab'
-import { set, useForm } from 'react-hook-form'
-
+import { zodResolver } from "@hookform/resolvers/zod"; 
+import {  useForm } from 'react-hook-form'
+import { hrJobSchemaWithSalaryCheck } from '../../lib/PostJob.validation'
 const CreateJobPost = () => {
-  const { register, handleSubmit, watch, setValue,reset, control, formState: { error } } = useForm({
+  const { register, handleSubmit, watch, setValue,reset, control, formState: { errors } } = useForm({
     defaultValues: {
       responsibility: [{ value: "" }],
       benifit: [{ value: '' }],
       qualification:[{value:""}],
-      skills:['']
+      skills:[''],
     },
+    resolver:zodResolver(hrJobSchemaWithSalaryCheck)
 
   })
-
+  const onError = (errors) => {
+  console.log("Validation Errors:", errors);
+};
   function onSubmit(data) {
     console.log(data)
     reset()
@@ -28,7 +32,6 @@ const CreateJobPost = () => {
     <section className='w-full min-h-screen bg-linear-to-r from-gray-900 to-black text-white overflow-hidden'>
       <h1 className='max-w-[90%] md:w-5xl m-auto font-roboto text-4xl font-medium mt-5 md:mt-10'>Create Job Post</h1>
       <p className='max-w-[90%] md:w-5xl m-auto font-roboto text-[18px]  mt-3 text-gray-400'>Fill out the details below to create a comprehensive job posting that attracts the right candidates.</p>
-      {/* make responsive for the mobile views */}
       <div className="md:w-5xl m-auto mt-7">
         <Tabs defaultValue="basics" className="">
           <TabsList className="w-5xl  gap-2.5 bg-gray-300 ">
@@ -47,7 +50,7 @@ const CreateJobPost = () => {
               <span ><Users /></span>
               Settings</TabsTrigger>
           </TabsList>
-          <form id="myform" onSubmit={handleSubmit(onSubmit)}>
+          <form id="myform" onSubmit={handleSubmit(onSubmit,onError)}>
             <TabsContent value="basics" className="">
               <BasicsTab register={register} control={control} />
             </TabsContent>

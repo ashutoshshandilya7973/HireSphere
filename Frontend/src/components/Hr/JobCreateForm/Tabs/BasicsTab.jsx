@@ -104,7 +104,7 @@ const BasicsTab = ({ register, control }) => {
             <div className="space-y-2">
               <Label>Experience Level*</Label>
               <Controller
-                name="experience"
+                name="experienceLevel"
                 control={control}
                 render={({ field }) => (
                   <Select onValueChange={field.onChange} value={field.value}>
@@ -133,13 +133,13 @@ const BasicsTab = ({ register, control }) => {
               <Label htmlFor="minimum" className="text-gray-400">
                 Minimum
               </Label>
-              <Input {...register("minimum")} placeholder="80000" id="minimum" />
+              <Input {...register("minSalary")} placeholder="80000" id="minimum" />
             </div>
             <div className="space-y-1">
               <Label htmlFor="maximum" className="text-gray-400">
                 Maximum
               </Label>
-              <Input {...register("maximum")} placeholder="800000" id="maximum" />
+              <Input {...register("maxSalary")} placeholder="800000" id="maximum" />
             </div>
             <div className="space-y-1">
               <Label>Currency</Label>
@@ -168,7 +168,7 @@ const BasicsTab = ({ register, control }) => {
           {/* Checkboxes */}
           <div className="flex items-center gap-4">
             <Controller
-              name="remote"
+              name="remoteWork"
               control={control}
               render={({ field }) => (
                 <div className="flex gap-2.5">
@@ -183,7 +183,7 @@ const BasicsTab = ({ register, control }) => {
             />
 
             <Controller
-              name="urgent"
+              name="urgentHiring"
               control={control}
               render={({ field }) => (
                 <div className="flex gap-2.5">

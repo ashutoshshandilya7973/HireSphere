@@ -3,6 +3,7 @@ import { Button } from '../ui/button';
 import { Rocket, Target, Plus, Zap, Activity, Users, Clock} from 'lucide-react'
 import { Card ,CardContent } from '../ui/card';
 import { FileText } from 'lucide-react';
+import { Link } from 'react-router-dom';
 const Hero = () => {
     const [currentStep, setCurrentStep] = useState(0);
     useEffect(() => {
@@ -146,10 +147,10 @@ const Hero = () => {
                                         variant="secondary"
                                         className="button-interactive bg-white text-primary hover:bg-white/90 shadow-lg"
                                     >
-                                        <a href="" className="flex items-center gap-3">
+                                        <Link to="/admin-dashboard/create-job" className="flex items-center gap-3">
                                             <Plus className="h-5 w-5" />
                                             Create Your First Job
-                                        </a>
+                                        </Link>
                                     </Button>
                                     <Button
                                         size="lg"

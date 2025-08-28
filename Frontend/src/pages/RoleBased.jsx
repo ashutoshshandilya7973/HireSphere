@@ -1,5 +1,3 @@
-"use client"
-
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -7,28 +5,42 @@ import { useUser } from "@clerk/clerk-react"
 import { useEffect } from "react"
 import { Users, Briefcase } from "lucide-react"
 import { useNavigate } from "react-router-dom"
-
+import { supabase } from '../utils/supabase.js'
 export default function RoleSelection() {
   const [selectedRole, setSelectedRole] = useState(null)
-  const {user}=useUser(null)
-  const navigate=useNavigate()
-  const handleRoleSelect = (role) => {
-    setSelectedRole(role)
-    
-  }
-    useEffect(() => {
-      if (user) {
-        user.update({
-          unsafeMetadata: {
-            "role": selectedRole
-          }
-        })
-        console.log(user)
-        if(selectedRole==="hr"){
-        navigate('/admin-dashboard')
+  const { user } = useUser(null)
+  const navigate = useNavigate()
+  const handleRoleSelect = async (role) => {
+    console.log(user.id)
+    console.log(Clerk.session?.getToken())
+    const { error } = await supabase.from('profiles').insert([{
+      id: user.id,
+      email: user.emailAddresses[0].emailAddress,
+      role: role
+    }]);
+
+    if (error) {
+      console.log(error)
+      return;
     }
+    setSelectedRole(role)
+
+  }
+
+  useEffect(() => {
+    if (user) {
+      user.update({
+        unsafeMetadata: {
+          "role": selectedRole
+        }
+      })
+
+      if (selectedRole === "hr") {
+        navigate('/admin-dashboard', { replace: true })
       }
-    }, [user,selectedRole])
+      console.log(user)
+    }
+  }, [selectedRole])
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
@@ -40,9 +52,8 @@ export default function RoleSelection() {
 
         <div className="grid gap-4">
           <Card
-            className={`cursor-pointer transition-all hover:shadow-md ${
-              selectedRole === "hr" ? "ring-2 ring-primary" : ""
-            }`}
+            className={`cursor-pointer transition-all hover:shadow-md ${selectedRole === "hr" ? "ring-2 ring-primary" : ""
+              }`}
             onClick={() => handleRoleSelect("hr")}
           >
             <CardHeader className="text-center pb-4">
@@ -55,9 +66,8 @@ export default function RoleSelection() {
           </Card>
 
           <Card
-            className={`cursor-pointer transition-all hover:shadow-md ${
-              selectedRole === "jobseeker" ? "ring-2 ring-primary" : ""
-            }`}
+            className={`cursor-pointer transition-all hover:shadow-md ${selectedRole === "jobseeker" ? "ring-2 ring-primary" : ""
+              }`}
             onClick={() => handleRoleSelect("jobseeker")}
           >
             <CardHeader className="text-center pb-4">
