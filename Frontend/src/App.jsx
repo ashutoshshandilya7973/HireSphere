@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useLayoutEffect } from 'react'
 import './App.css'
 import NavBar from './components/Landing/NavBar'
 import LandingPage from './pages/LandingPage'
@@ -7,7 +7,19 @@ import { RouterProvider } from "react-router/dom";
 import Index from './pages/Hr'
 import RoleSelection from './pages/RoleBased';
 import CreateJobPost from './pages/Hr/CreateJobPost';
+import { useUser } from '@clerk/clerk-react';
+import useUserStore from './stores/useUserStore';
+import { useAuth } from '@clerk/clerk-react';
+import AdminLayout from './components/Layouts/AdminLayout';
 function App() {
+  const { user } = useUser();
+  const { id, setId } = useUserStore()
+
+  useLayoutEffect(() => {
+    if (user && user.id !== id) {
+      setId(user.id)
+    }
+  }, [user?.id, id])
 
   const router = createBrowserRouter([
     {
@@ -30,8 +42,9 @@ function App() {
 
   return (
     <>
-      <RouterProvider router={router} />
+      {/* <RouterProvider router={router} /> */}
       {/* <Index/> */}
+      <AdminLayout/>
     </>
   )
 }

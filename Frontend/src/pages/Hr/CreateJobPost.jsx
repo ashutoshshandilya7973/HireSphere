@@ -1,5 +1,4 @@
-import React from 'react'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '../../components/ui/tabs'
 import { Button } from '../../components/ui/button'
 import { Briefcase, Target, Award, Users, Eye, Save, Send } from "lucide-react"
@@ -7,25 +6,54 @@ import BasicsTab from '../../components/Hr/JobCreateForm/Tabs/BasicsTab'
 import DetailsTab from '../../components/Hr/JobCreateForm/Tabs/DetailsTab'
 import RequirementsTab from '../../components/Hr/JobCreateForm/Tabs/RequirementsTab'
 import SettingsTab from '../../components/Hr/JobCreateForm/Tabs/SettingsTab'
-import { zodResolver } from "@hookform/resolvers/zod"; 
-import {  useForm } from 'react-hook-form'
+import { zodResolver } from "@hookform/resolvers/zod";
+import { supabase } from '../../utils/supabase'
+import { FormProvider, useForm } from 'react-hook-form'
 import { hrJobSchemaWithSalaryCheck } from '../../lib/PostJob.validation'
+import useUserStore from '../../stores/useUserStore'
+import { toast } from 'sonner'
 const CreateJobPost = () => {
-  const { register, handleSubmit, watch, setValue,reset, control, formState: { errors } } = useForm({
+  
+  const { id } = useUserStore()
+  console.log("x")
+  const methods = useForm({
     defaultValues: {
+      title: "",
+      department: "",
+      location: "",
+      jobType: "",
+      experienceLevel: "",
+      minSalary: "",
+      maxSalary: "",
+      currency: "USD",
+      remoteWork: false,
+      urgentHiring: false,
+      jobDescription: "",
       responsibility: [{ value: "" }],
-      benifit: [{ value: '' }],
-      qualification:[{value:""}],
-      skills:[''],
+      benifits: [{ value: '' }],
+      qualification: [{ value: "" }],
+      skills: [''],
+      deadlineDate: "",
+      startDate: "",
+      skillAssessment: false,
+      companyDescription: "",
+      user_id:id
     },
-    resolver:zodResolver(hrJobSchemaWithSalaryCheck)
+    resolver: zodResolver(hrJobSchemaWithSalaryCheck)
 
   })
-  const onError = (errors) => {
-  console.log("Validation Errors:", errors);
-};
-  function onSubmit(data) {
-    console.log(data)
+  const { register, handleSubmit, watch, setValue, reset, control, formState: { errors } } = methods
+
+  async function onSubmit(data1) {
+
+    console.log(data1)
+    const { data, error } = await supabase.from('Hr-Job-Post').insert(data1).select();
+    if (error) {
+      console.log("error occuring while inserting the row in job post table", error);
+      return;
+    }else{
+      toast("course is created successfully")
+    }
     reset()
   }
   return (
@@ -50,42 +78,48 @@ const CreateJobPost = () => {
               <span ><Users /></span>
               Settings</TabsTrigger>
           </TabsList>
-          <form id="myform" onSubmit={handleSubmit(onSubmit,onError)}>
-            <TabsContent value="basics" className="">
-              <BasicsTab register={register} control={control} />
-            </TabsContent>
-            <TabsContent value="details">
-              <DetailsTab register={register} control={control} />
-            </TabsContent>
-            <TabsContent value="requirements">
-              <RequirementsTab register={register} control={control} watch={watch} setValue={setValue}/>
-            </TabsContent>
-            <TabsContent value="settings">
-              <SettingsTab register={register} control={control} setValue={setValue}/>
-            </TabsContent>
-          </form>
+          <FormProvider {...methods}>
+            <form id="myform" onSubmit={handleSubmit(onSubmit)}>
+              <TabsContent value="basics" className="">
+                <BasicsTab />
+              </TabsContent>
+              <TabsContent value="details">
+                <DetailsTab />
+              </TabsContent>
+              <TabsContent value="requirements">
+                <RequirementsTab />
+              </TabsContent>
+              <TabsContent value="settings">
+                <SettingsTab />
+              </TabsContent>
+              {/* Move the buttons here */}
+              <div className="  max-w-[90%] md:w-5xl m-auto mt-10 flex justify-between">
+                <div className="flex items-center gap-3.5">
+                  <Button className="bg-gray-400" type="button">
+                    <span><Eye /></span>
+                    Preview
+                  </Button>
+                  <Button className="bg-gray-400" type="button">Cancel</Button>
+                </div>
+                <div className="flex items-center gap-3.5">
+                  <Button className="bg-gray-400" type="button">
+                    <span><Save /> </span>
+                    Save as draft
+                  </Button>
+                  <Button className="bg-gray-700" type="submit">
+                    <span><Send /></span>
+                    Publish job
+                  </Button>
+                </div>
+              </div>
+            </form>
+            {Object.keys(errors).length > 0 && (
+              <pre className="text-red-500">{JSON.stringify(errors, null, 2)}</pre>
+            )}
+          </FormProvider>
         </Tabs>
       </div>
       {/* <div className='h-[1px] w-full bg-white max-w-[90%] md:w-5xl m-auto mt-5 '></div> */}
-      <div className="  max-w-[90%] md:w-5xl m-auto mt-10 flex justify-between">
-        <div className="flex items-center gap-3.5">
-          <Button className="bg-gray-400">
-            <span><Eye /></span>
-            Preview
-          </Button>
-          <Button className="bg-gray-400">Cancel</Button>
-        </div>
-        <div className="flex items-center gap-3.5">
-          <Button className="bg-gray-400">
-            <span><Save /> </span>
-            Save as draft
-          </Button>
-          <Button type="submit" form="myform" className="bg-gray-700">
-            <span><Send /></span>
-            Publish job
-          </Button>
-        </div>
-      </div>
 
     </section>
   )

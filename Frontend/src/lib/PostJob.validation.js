@@ -15,7 +15,7 @@ const hrJobPostSchema = z.object({
     responsibility: z.array(z.object({
         value: z.string()
     })).optional(),
-    benefits: z.array(z.object({
+    benifits: z.array(z.object({
         value: z.string()
     })).optional(),
     qualification: z.array(z.object({
@@ -34,9 +34,9 @@ const hrJobPostSchema = z.object({
         invalid_type_error: "Invalid date format"
     }),
 
-    skillAssessment: z.string().optional().default("no"),
+    skillAssessment: z.boolean().optional().default(false),
     companyDescription: z.string().min(1, "Company description is required"),
-    userId: z.string().min(1, "User ID is required"),
+    user_id:z.string().min(1,"user_id should be defined")
 });
  const hrJobSchemaWithSalaryCheck = hrJobPostSchema.refine(
   (data) => data.maxSalary > data.minSalary,

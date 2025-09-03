@@ -2,9 +2,11 @@ import React from 'react'
 import { Card, CardHeader, CardFooter, CardTitle, CardAction, CardDescription, CardContent } from '../../../ui/card'
 import { Lightbulb, Target } from 'lucide-react'
 import { Textarea } from '../../../ui/textarea'
-import DynamicListField from '../DynamicListField'
+import DynamicListField from '../../../../features/form/components/controller/DynamicListField'
+import TextField from '../../../../features/form/components/controller/TextField'
+import TextAreaComp from '../../../../features/form/components/controller/TextArea'
 
-const DetailsTab = ({register,control}) => {
+const DetailsTab = () => {
     return (
         <div>
             <Card>
@@ -16,8 +18,8 @@ const DetailsTab = ({register,control}) => {
                 </CardHeader>
                 <CardContent>
                     <div className='grid w-full gap-2'>
+                        <TextAreaComp name="jobDescription" placeholder="Describe the role,company culture,and what makes this oppertunity exciting..." row={8} className="resize-none" />
 
-                        <Textarea {...register("jobDescription")} placeholder="Describe the role,company culture,and what makes this oppertunity exciting..." rows={8} className="resize-none"  />
                         <div className="flex items-center gap-1">
                             <span><Lightbulb className='h-3 w-3' /></span>
                             <p className='text-muted-foreground text-[14px]'>Tip: Include company mission, role impact, and growth opportunities</p>
@@ -34,7 +36,7 @@ const DetailsTab = ({register,control}) => {
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <DynamicListField name="responsibility" inputPlaceholder="e.g.,Lead Frontend Development initiative" btnPlaceholder="Add Responsibility" register={register} control={control}/>
+                        <DynamicListField name="responsibility" placeholder="e.g.,Lead Frontend Development initiative" btnPlaceholder="Add Responsibility"  />
                     </CardContent>
                 </Card>
                 <Card>
@@ -45,7 +47,7 @@ const DetailsTab = ({register,control}) => {
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <DynamicListField name="benifits" inputPlaceholder="e.g.,Health insurence,401k matching" btnPlaceholder="Add Benifit" register={register} control={control}/>
+                        <DynamicListField name="benifits" placeholder="e.g.,Health insurence,401k matching" btnPlaceholder="Add Benifit" />
                     </CardContent>
                 </Card>
             </div>

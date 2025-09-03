@@ -4,10 +4,10 @@ import { Menu } from "lucide-react";
 import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton, useUser } from "@clerk/clerk-react";
 import { Link } from "react-router-dom";
 import ClerkAuth from "./ClerkAuth";
+import useUserStore from "../../stores/useUserStore";
 const NavBar = () => {
   const [hamburger, setHamburger] = useState(false);
   const toggleHamburger = () => setHamburger((prev) => !prev);
-  
   return (
     <nav className="relative max-w-6xl mt-2.5 m-auto flex justify-between items-center text-white md:bg-gray-700 px-6 py-2 rounded-4xl shadow-lg shadow-gray-600/50">
       {/* Logo */}

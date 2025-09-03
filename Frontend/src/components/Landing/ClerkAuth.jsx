@@ -2,10 +2,11 @@ import React, { useEffect } from 'react';
 import { useUser } from '@clerk/clerk-react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../utils/supabase';
-
+import useUserStore from '../../stores/useUserStore';
 const ClerkAuth = () => {
   const { user } = useUser();
   const navigate = useNavigate();
+  const {id,setId}=useUserStore()
 
   useEffect(() => {
     if (!user) return; // wait until user is loaded
@@ -15,7 +16,7 @@ const ClerkAuth = () => {
       const { data, error } = await supabase
         .from('profiles')
         .select('role')
-        .eq('id', user.id)
+        .eq('user_id', user.id)
         .single();
 
       if (error) {
@@ -24,8 +25,10 @@ const ClerkAuth = () => {
       }
 
       if (data?.role === 'hr') {
+  if (user.id !== id) setId(user.id);
         navigate('/admin-dashboard');
       } else {
+  if (user.id !== id) setId(user.id);
         navigate('/');
       }
     };

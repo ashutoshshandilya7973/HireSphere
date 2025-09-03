@@ -11,10 +11,8 @@ export default function RoleSelection() {
   const { user } = useUser(null)
   const navigate = useNavigate()
   const handleRoleSelect = async (role) => {
-    console.log(user.id)
-    console.log(Clerk.session?.getToken())
     const { error } = await supabase.from('profiles').insert([{
-      id: user.id,
+      user_id: user.id,
       email: user.emailAddresses[0].emailAddress,
       role: role
     }]);
