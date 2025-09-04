@@ -1,10 +1,8 @@
 import React from 'react'
 import SideBar from '../SideBar'
-import useScreenSize from '../../hooks/useScreenSize'
-import Header from '../Hr/Header'
 import { menus } from '../Hr/constant/menu'
-import useFetchJobs from '../../hooks/useFetchJobs'
-import Body from '../Hr/Body'
+import  Header from "../Hr/Header"
+import useScreenSize from '../../hooks/useScreenSize'
 const AdminLayout = ({ children }) => {
     const { isMobile } = useScreenSize()
     return (
@@ -20,7 +18,7 @@ const AdminLayout = ({ children }) => {
             <div className=" w-full flex-4 ">
                 <Header />
                 <div className="max-w-[90%] m-auto">
-                    <Body/>
+                    {children}
                 </div>
                 
             </div>
